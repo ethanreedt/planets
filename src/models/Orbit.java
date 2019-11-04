@@ -13,11 +13,11 @@ public class Orbit {
     /** time (used for now as radians for orbit) **/
     private double             t;
 
-    public Orbit ( final Point bodyPosition, final OrbitingBody body, final double radius ) {
-        this.bodyPosition = bodyPosition;
+    public Orbit ( final OrbitingBody body, final double radius ) {
         this.body = body;
         this.radius = radius;
         this.t = 0;
+        this.bodyPosition = new Point( radius * Math.cos( t ), radius * Math.sin( t ) );
     }
 
     public void update () {

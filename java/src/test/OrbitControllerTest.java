@@ -1,6 +1,8 @@
 package test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,6 +24,7 @@ public class OrbitControllerTest {
 
     @Before
     public void setUp () throws Exception {
+
         sun = new CentralBody( "sun", 300.0 );
         earth = new OrbitingBody( "earth", 30.0, sun );
         mars = new OrbitingBody( "mars", 100.0, sun );
@@ -31,6 +34,8 @@ public class OrbitControllerTest {
 
         earthsOrbit = new Orbit( earth, earthRadius );
         marsOrbit = new Orbit( mars, marsRadius );
+
+        oc = new OrbitController( sun );
     }
 
     @Test
@@ -38,14 +43,15 @@ public class OrbitControllerTest {
         oc = new OrbitController( sun );
         assertEquals( "sun", oc.getCentralBody().getName() );
 
-        oc.setCentralBody( earth );
-        assertEquals( "earth", oc.getCentralBody().getName() );
+        // oc.setCentralBody( earth );
+        // assertEquals( "earth", oc.getCentralBody().getName() );
     }
 
     @Test
     public void testAddRemoveOrbit () {
         oc.addOrbit( earthsOrbit );
         assertEquals( 1, oc.orbits.size() );
+        assertEquals( oc.getEpoch(), oc.getOrbit( "earth" ).getEpoch(), 0.0000001 );
 
         oc.addOrbit( earthsOrbit );
         assertEquals( 1, oc.orbits.size() );
@@ -58,18 +64,19 @@ public class OrbitControllerTest {
 
         oc.removeOrbit( earthsOrbit );
         assertEquals( 1, oc.orbits.size() );
-        assertEquals( "earth", oc.getOrbit( oc.orbits.size() - 1 ) );
-
-        // error check for removing orbits when no orbits exist
+        assertEquals( "mars", oc.getOrbit( oc.orbits.size() - 1 ).getBody().getName() );
 
     }
 
     @Test
-    public void testGetOrbti () {
-        oc.addOrbit( "earth" );
-        assertEquals( "earth", oc.getOrbit( "earth" ).getName() );
+    public void testGetOrbit () {
+        oc.addOrbit( earthsOrbit );
+        assertEquals( "earth", oc.getOrbit( oc.orbits.size() - 1 ).getBody().getName() );
 
-        // error check for getting orbit that does not exist
+        assertEquals( earthsOrbit, oc.getOrbit( "earth" ) );
+
+        // TODO: error check for getting orbit that does not exist
+        assertNull( oc.getOrbit( "Tatooine" ) );
     }
 
     @Test

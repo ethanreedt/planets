@@ -11,7 +11,7 @@ import logic.OrbitController;
 import models.CentralBody;
 import models.Orbit;
 import models.OrbitingBody;
-import util.Point;
+import models.Point;
 
 public class OrbitControllerTest {
 

@@ -1,28 +1,26 @@
 package models;
 
-import util.Point;
+import util.Equation;
 
 public class Orbit {
 
-    private final Point        bodyPosition;
+    private Point              bodyPosition;
     private final OrbitingBody body;
     private final double       radius;
 
     /** time (used for now as radians for orbit) **/
     private double             t;
 
-    public Orbit ( final OrbitingBody body, final double radius ) {
+    public Orbit ( final OrbitingBody body, final double radius, final double epoch ) {
         this.body = body;
         this.radius = radius;
-        this.bodyPosition = new Point( radius * Math.cos( t ), radius * Math.sin( t ) );
+        this.t = epoch;
+        this.bodyPosition = Equation.simpleOrbitPos( radius, epoch );
     }
 
     public void update ( final double epoch ) {
-        final double nextX = radius * Math.cos( epoch );
-        final double nextY = radius * Math.sin( epoch );
-        bodyPosition.setX( nextX );
-        bodyPosition.setY( nextY );
         setEpoch( epoch );
+        bodyPosition = Equation.simpleOrbitPos( getRadius(), getEpoch() );
     }
 
     public Body getBody () {
@@ -39,6 +37,10 @@ public class Orbit {
 
     public double getEpoch () {
         return this.t;
+    }
+
+    public double getRadius () {
+        return this.radius;
     }
 
 }

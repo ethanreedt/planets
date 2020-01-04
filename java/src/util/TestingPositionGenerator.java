@@ -20,8 +20,4 @@ public class TestingPositionGenerator {
 
     }
 
-    public Point posAtTime ( final double epoch ) {
-
-    }
-
 }
